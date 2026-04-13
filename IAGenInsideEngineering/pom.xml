@@ -9,11 +9,11 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>edu.dosw.lab</groupId>
-	<artifactId>Laboratorio-3-DOSW</artifactId>
+	<groupId>eci.edu.byteProgramming</groupId>
+	<artifactId>ejercicio-paper</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Laboratorio-3-DOSW</name>
-	<description>Project for Lab03</description>
+	<name>ByteProgramming - Ejercicio Paper</name>
+	<description>Proyecto de ejercicios de programación - Paper</description>
 
 	<properties>
 	<java.version>17</java.version>

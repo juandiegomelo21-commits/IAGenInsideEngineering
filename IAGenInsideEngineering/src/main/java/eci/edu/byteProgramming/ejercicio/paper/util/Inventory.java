@@ -1,4 +1,4 @@
-package eci.edu.dosw.parcial.parcial1cvdsdosw01.util;
+package eci.edu.byteprogramming.ejercicio.paper.util;
 
 import java.util.HashMap;
 import java.util.Map;

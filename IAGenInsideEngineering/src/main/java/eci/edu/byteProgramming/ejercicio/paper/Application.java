@@ -1,4 +1,4 @@
-package eci.edu.dosw.parcial.parcial1cvdsdosw01;
+package eci.edu.byteprogramming.ejercicio.paper;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
