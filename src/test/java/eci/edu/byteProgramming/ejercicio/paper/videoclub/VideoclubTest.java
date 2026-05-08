@@ -96,22 +96,52 @@ public class VideoclubTest {
     }
 
     @Test
-    void videoclub_ejecutar_basicaWithUnavailableMovie_skipsMovie() {
+    void videoclub_ejecutar_basicaWithUnavailableMovie_skipsUnavailable() {
+        // El Padrino (2) no disponible → se ignora, Interestellar y Matrix sí
         String input = "1\n1,2,4\n";
         Scanner scanner = new Scanner(new ByteArrayInputStream(input.getBytes()));
         assertDoesNotThrow(() -> new Videoclub().ejecutar(scanner));
     }
 
     @Test
-    void videoclub_ejecutar_noAvailableMoviesSelected_handlesGracefully() {
-        String input = "1\n2\n";
+    void videoclub_ejecutar_invalidMembership_reprompts() {
+        // "abc" inválido → re-pregunta → "1" válido → Basica
+        String input = "abc\n1\n3\n";
         Scanner scanner = new Scanner(new ByteArrayInputStream(input.getBytes()));
         assertDoesNotThrow(() -> new Videoclub().ejecutar(scanner));
     }
 
     @Test
-    void videoclub_ejecutar_invalidInput_handlesGracefully() {
-        String input = "abc\nxyz\n";
+    void videoclub_ejecutar_unavailableMovieThenValid_reprompts() {
+        // Primer intento: solo El Padrino (no disponible) → re-pregunta
+        // Segundo intento: Inception (disponible) → éxito
+        String input = "1\n2\n3\n";
+        Scanner scanner = new Scanner(new ByteArrayInputStream(input.getBytes()));
+        assertDoesNotThrow(() -> new Videoclub().ejecutar(scanner));
+    }
+
+    @Test
+    void videoclub_ejecutar_invalidMovieInputThenValid_reprompts() {
+        // Primer intento: "xyz" → inválido → re-pregunta
+        // Segundo intento: "1,3" → válido → éxito
+        String input = "2\nxyz\n1,3\n";
+        Scanner scanner = new Scanner(new ByteArrayInputStream(input.getBytes()));
+        assertDoesNotThrow(() -> new Videoclub().ejecutar(scanner));
+    }
+
+    @Test
+    void videoclub_ejecutar_emptyMovieInput_reprompts() {
+        // Primer intento: "" (vacío) → pide de nuevo
+        // Segundo intento: "4" → válido
+        String input = "1\n\n4\n";
+        Scanner scanner = new Scanner(new ByteArrayInputStream(input.getBytes()));
+        assertDoesNotThrow(() -> new Videoclub().ejecutar(scanner));
+    }
+
+    @Test
+    void videoclub_ejecutar_noInputAtAll_handlesGracefully() {
+        // Scanner vacío → sale sin excepción
+        String input = "1\n";
         Scanner scanner = new Scanner(new ByteArrayInputStream(input.getBytes()));
         assertDoesNotThrow(() -> new Videoclub().ejecutar(scanner));
     }

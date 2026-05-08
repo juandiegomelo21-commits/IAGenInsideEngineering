@@ -65,36 +65,60 @@ public class Videoclub {
         System.out.println("Tipo de membresia:");
         System.out.println("  1. Basica  (precio normal)");
         System.out.println("  2. Premium (20% de descuento)");
-        System.out.print("Seleccione (1/2): ");
 
-        String entrada = scanner.nextLine().trim();
-        System.out.println();
-        return entrada.equals("2") ? new MembresiaPremium() : new MembresiaBasica();
+        while (true) {
+            System.out.print("Seleccione (1/2): ");
+            if (!scanner.hasNextLine()) { System.out.println(); return new MembresiaBasica(); }
+            String entrada = scanner.nextLine().trim();
+            System.out.println();
+            if (entrada.equals("1")) return new MembresiaBasica();
+            if (entrada.equals("2")) return new MembresiaPremium();
+            System.out.println("Opcion invalida. Ingrese 1 para Basica o 2 para Premium.");
+        }
     }
 
     private List<Pelicula> seleccionarPeliculas(Scanner scanner) {
-        System.out.print("Seleccione peliculas (numeros separados por coma): ");
-        String entrada = scanner.nextLine().trim();
-        System.out.println();
-
         List<Pelicula> seleccionadas = new ArrayList<>();
-        for (String parte : entrada.split(",")) {
-            try {
-                int indice = Integer.parseInt(parte.trim()) - 1;
-                if (indice < 0 || indice >= catalogo.size()) {
-                    System.out.println("Numero invalido: " + (indice + 1) + " (ignorado)");
-                    continue;
+
+        while (seleccionadas.isEmpty()) {
+            System.out.print("Seleccione peliculas (numeros separados por coma): ");
+            if (!scanner.hasNextLine()) break;
+            String entrada = scanner.nextLine().trim();
+            System.out.println();
+
+            if (entrada.isEmpty()) {
+                System.out.println("Debe ingresar al menos un numero. Intente de nuevo.");
+                System.out.println();
+                continue;
+            }
+
+            List<Pelicula> intento = new ArrayList<>();
+            for (String parte : entrada.split(",")) {
+                try {
+                    int indice = Integer.parseInt(parte.trim()) - 1;
+                    if (indice < 0 || indice >= catalogo.size()) {
+                        System.out.println("Numero invalido: " + (indice + 1) + " (ignorado)");
+                        continue;
+                    }
+                    Pelicula pelicula = catalogo.get(indice);
+                    if (!pelicula.isDisponible()) {
+                        System.out.println("\"" + pelicula.getTitulo() + "\" no esta disponible (ignorada)");
+                        continue;
+                    }
+                    intento.add(pelicula);
+                } catch (NumberFormatException e) {
+                    System.out.println("Entrada invalida: \"" + parte.trim() + "\" (ignorada)");
                 }
-                Pelicula pelicula = catalogo.get(indice);
-                if (!pelicula.isDisponible()) {
-                    System.out.println("\"" + pelicula.getTitulo() + "\" no esta disponible (ignorada)");
-                    continue;
-                }
-                seleccionadas.add(pelicula);
-            } catch (NumberFormatException e) {
-                System.out.println("Entrada invalida: \"" + parte.trim() + "\" (ignorada)");
+            }
+
+            if (intento.isEmpty()) {
+                System.out.println("Ninguna pelicula valida seleccionada. Intente de nuevo.");
+                System.out.println();
+            } else {
+                seleccionadas = intento;
             }
         }
+
         return seleccionadas;
     }
 
