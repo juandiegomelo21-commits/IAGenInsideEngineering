@@ -1,6 +1,6 @@
 package eci.edu.byteProgramming.ejercicio.paper.util;
 
-public class CryptoFactory extends PaymentMethod {
+public class CryptoFactory extends PaymentMethod implements PaymentFactory {
     private String walletAddress;
     private String cryptoType;
     private String token;
@@ -12,8 +12,12 @@ public class CryptoFactory extends PaymentMethod {
         super(amount, customerId, description);
         this.walletAddress = walletAddress;
         this.cryptoType = cryptoType;
-        this.token = token;
         this.walletBalance = walletBalance;
+    }
+
+    @Override
+    public PaymentMethod createPaymentMethod(double amount, String customerId, String description) {
+        return new CryptoFactory(amount, customerId, description, walletAddress, cryptoType, walletBalance);
     }
     
     @Override

@@ -1,6 +1,6 @@
 package eci.edu.byteProgramming.ejercicio.paper.util;
 
-public class CreditCardFactory extends PaymentMethod{
+public class CreditCardFactory extends PaymentMethod implements PaymentFactory {
     private String number;
     private String name;
     private String expirationDate;
@@ -16,6 +16,12 @@ public class CreditCardFactory extends PaymentMethod{
         this.expirationDate = expirationDate;
         this.cvv = cvv;
         this.cardType = determineCardType(number);
+        this.address = address;
+    }
+
+    @Override
+    public PaymentMethod createPaymentMethod(double amount, String customerId, String description) {
+        return new CreditCardFactory(amount, customerId, description, number, name, expirationDate, cvv, address);
     }
 
     @Override

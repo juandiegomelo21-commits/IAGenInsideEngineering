@@ -1,6 +1,6 @@
 package eci.edu.byteProgramming.ejercicio.paper.util;
 
-public class PaypalFactory extends PaymentMethod{
+public class PaypalFactory extends PaymentMethod implements PaymentFactory {
     private String email;
     private String paypalTransactionId;
     private String authToken;
@@ -10,6 +10,11 @@ public class PaypalFactory extends PaymentMethod{
         super(amount, customerId, description);
         this.email = email;
         this.authToken = authToken;
+    }
+
+    @Override
+    public PaymentMethod createPaymentMethod(double amount, String customerId, String description) {
+        return new PaypalFactory(amount, customerId, description, email, authToken);
     }
     
     @Override
